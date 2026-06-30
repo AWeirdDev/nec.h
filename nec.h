@@ -23,7 +23,8 @@
 
 #define panic(message)                                                         \
     do {                                                                       \
-        fprintf(stderr, "program panicked: %s", message);                      \
+        fprintf(stderr, "program panicked: %s\n", message);                    \
+        exit(1);                                                               \
     } while (0)
 
 #endif // panic
