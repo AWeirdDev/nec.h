@@ -134,20 +134,23 @@ NEC_EXPORT void sv_free(StringView view);
         QUEUE_FIELDS(T)                                                        \
     }(Name);
 
+#define queue_next_back_pos(queue)                                             \
+    (((queue)->front + (queue)->count) % (queue)->capacity)
+
 #define queue_push_back(queue, item)                                           \
     do {                                                                       \
         da_reserve(queue, (queue)->count + 1);                                 \
-        (queue)                                                                \
-            ->items[((queue)->front + (queue)->count) % (queue)->capacity] =   \
-            (item);                                                            \
+        (queue)->items[queue_next_back_pos((queue))] = (item);                 \
         (queue)->count++;                                                      \
     } while (0)
+
+#define queue_next_front_pos(queue)                                            \
+    ((queue)->front + (queue)->capacity - 1) % (queue)->capacity
 
 #define queue_push_front(queue, item)                                          \
     do {                                                                       \
         da_reserve(queue, (queue)->count + 1);                                 \
-        (queue)->front =                                                       \
-            ((queue)->front + (queue)->capacity - 1) % (queue)->capacity;      \
+        (queue)->front = queue_next_front_pos((queue));                        \
         (queue)->items[(queue)->front] = (item);                               \
         (queue)->count++;                                                      \
     } while (0)
