@@ -186,6 +186,9 @@ NEC_EXPORT void sv_free(StringView view);
         (queue)->count++;                                                      \
     } while (0)
 
+#define queue_last(queue)                                                      \
+    (&(queue)->items[((queue)->front + (queue)->count - 1) % (queue)->capacity])
+
 #define queue_pop_back(queue, item)                                            \
     do {                                                                       \
         if ((queue)->count == 0)                                               \
@@ -194,6 +197,8 @@ NEC_EXPORT void sv_free(StringView view);
         *(item) = ((queue)->items[((queue)->front + --(queue)->count) %        \
                                   (queue)->capacity]);                         \
     } while (0)
+
+#define queue_first(queue) (&(queue)->items[(queue)->front])
 
 #define queue_pop_front(queue, item)                                           \
     do {                                                                       \
