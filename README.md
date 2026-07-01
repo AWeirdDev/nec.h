@@ -1,0 +1,2 @@
+# nec.h
+basic necessities
