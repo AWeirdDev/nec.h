@@ -52,10 +52,22 @@
         DA_FIELDS(T)                                                           \
     }(Name);
 
+/// Defines a dynamic array struct.
+#define DYNAMIC_ARRAY2(ITEMS, Name)                                            \
+    typedef struct {                                                           \
+        DA_FIELDS2(ITEMS)                                                      \
+    }(Name);
+
 /// Defines an annonymous dynamic array struct.
 #define DYNAMIC_ARRAY_ANNON(T)                                                 \
     struct {                                                                   \
         DA_FIELDS(T)                                                           \
+    }
+
+/// Defines a dynamic array struct.
+#define DYNAMIC_ARRAY2_ANNON(ITEMS)                                            \
+    struct {                                                                   \
+        DA_FIELDS2(ITEMS)                                                      \
     }
 
 /// Reserves space for the dynamic array.
