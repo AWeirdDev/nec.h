@@ -50,7 +50,13 @@
 #define DYNAMIC_ARRAY(T, Name)                                                 \
     typedef struct {                                                           \
         DA_FIELDS(T)                                                           \
-    } Name;
+    }(Name);
+
+/// Defines an annonymous dynamic array struct.
+#define DYNAMIC_ARRAY_ANNON(T)                                                 \
+    struct {                                                                   \
+        DA_FIELDS(T)                                                           \
+    };
 
 /// Reserves space for the dynamic array.
 #define da_reserve(da, expected_capacity)                                      \
@@ -143,9 +149,9 @@ NEC_EXPORT void sv_free(StringView view);
 
 /// Defines an annonymous queue struct.
 #define QUEUE_ANNON(T)                                                         \
-    typedef struct {                                                           \
+    struct {                                                                   \
         QUEUE_FIELDS(T)                                                        \
-    };
+    }
 
 #define queue_next_back_pos(queue)                                             \
     (((queue)->front + (queue)->count) % (queue)->capacity)
