@@ -47,7 +47,7 @@
     ITEMS;
 
 /// Defines a dynamic array struct.
-#define DYNAMIC_ARRAY(Name, T)                                                 \
+#define DYNAMIC_ARRAY(T, Name)                                                 \
     typedef struct {                                                           \
         DA_FIELDS(T)                                                           \
     } Name;
@@ -101,7 +101,7 @@
 //
 
 /// A string view.
-DYNAMIC_ARRAY(StringView, char)
+DYNAMIC_ARRAY(char, StringView)
 
 /// Checks if the string view ends with the specified character.
 NEC_EXPORT bool sv_ends_with_char(StringView *view, char c);
@@ -136,10 +136,16 @@ NEC_EXPORT void sv_free(StringView view);
     size_t front;
 
 /// Defines a queue struct.
-#define QUEUE(Name, T)                                                         \
+#define QUEUE(T, Name)                                                         \
     typedef struct {                                                           \
         QUEUE_FIELDS(T)                                                        \
     }(Name);
+
+/// Defines an annonymous queue struct.
+#define QUEUE_ANNON(T)                                                         \
+    typedef struct {                                                           \
+        QUEUE_FIELDS(T)                                                        \
+    };
 
 #define queue_next_back_pos(queue)                                             \
     (((queue)->front + (queue)->count) % (queue)->capacity)
