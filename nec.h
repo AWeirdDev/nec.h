@@ -56,7 +56,7 @@
 #define DYNAMIC_ARRAY_ANNON(T)                                                 \
     struct {                                                                   \
         DA_FIELDS(T)                                                           \
-    };
+    }
 
 /// Reserves space for the dynamic array.
 #define da_reserve(da, expected_capacity)                                      \
