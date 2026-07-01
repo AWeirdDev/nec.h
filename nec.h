@@ -41,7 +41,7 @@
 
 /// The essential fields for a dynamic array, with custom `items`. It must be a
 /// pointer.
-#define DA_FIELDS2(T, ITEMS)                                                   \
+#define DA_FIELDS2(ITEMS)                                                      \
     size_t count;                                                              \
     size_t capacity;                                                           \
     ITEMS;
