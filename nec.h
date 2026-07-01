@@ -39,6 +39,13 @@
     size_t capacity;                                                           \
     T *items;
 
+/// The essential fields for a dynamic array, with custom `items`. It must be a
+/// pointer.
+#define DA_FIELDS2(T, ITEMS)                                                   \
+    size_t count;                                                              \
+    size_t capacity;                                                           \
+    ITEMS;
+
 /// Defines a dynamic array struct.
 #define DYNAMIC_ARRAY(Name, T)                                                 \
     typedef struct {                                                           \
