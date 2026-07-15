@@ -1,6 +1,34 @@
+/*
+    nec_string.h -- v0.0.1 -- tiny string library
+
+    USAGE
+    -----
+    To add the implementations, first define `NEC_STRING_IMPLEMENTATION` and
+    then the inclusion.
+
+        #define NEC_STRING_IMPLEMENTATION
+        #include "nec_string.h"
+
+    ALLOCATION
+    ----------
+    You can setup your custom allocator defining `NEC_REALLOC`:
+
+        #define NEC_REALLOC(ptr, size) my_realloc(ptr, size)
+
+    This is useful if you're not with malloc().
+ */
+
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
+
+/////////////////////////
+//                     //
+//       HEADER        //
+//                     //
+/////////////////////////
+#ifndef NEC_STRING_H_
+#define NEC_STRING_H_
 
 #ifndef NECSDEF
 #define NECSDEF extern
@@ -32,6 +60,14 @@ NECSDEF StringView nec_string_as_slice(const String* str);
 #ifndef NEC_SV_ARG
 #define NEC_SV_ARG(sv) (int)(sv)->len, (sv)->items
 #endif
+
+#endif  // NEC_STRING_H_
+
+/////////////////////////
+//                     //
+//        IMPL         //
+//                     //
+/////////////////////////
 
 #ifdef NEC_STRING_IMPLEMENTATION
 
@@ -95,7 +131,7 @@ NECSDEF String nec_string_from_cstr(const char* cstr) {
 
     // man 3 strcpy:
     // The stpcpy() and strcpy() functions copy the string src to dst (including
-    // the terminating ‘\0’ character.)
+    // the terminating '\0' character.)
     strcpy(s.items, cstr);
     s.len = len;  // treat it as not used
 
