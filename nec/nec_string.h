@@ -30,28 +30,41 @@
 #ifndef NEC_STRING_H_
 #define NEC_STRING_H_
 
+#ifdef __cplusplus
+namespace nec_string {
+#endif  // __cplusplus
+
 #ifndef NECSDEF
 #define NECSDEF extern
 #endif  // NECSDEF
 
+#ifndef NECSDEF_NAME
+#ifdef __cplusplus
+#define NECSDEF_NAME(name) name
+#else
+#define NECSDEF_NAME(name) nec_##name
+#endif  // __cplusplus
+#endif
+
 typedef struct String {
     size_t len, capacity;
     char* items;
-} String;
+}  // namespace nec_stringtypedefstruct String
+String;
 
 typedef struct StringView {
     size_t len;
     char* items;
 } StringView;
 
-NECSDEF String nec_string_new();
-NECSDEF bool nec_string_push(String* str, const char item);
-NECSDEF bool nec_string_push_cstr(String* str, const char* cstr);
+NECSDEF String NECSDEF_NAME(string_new)();
+NECSDEF bool NECSDEF_NAME(string_push)(String* str, const char item);
+NECSDEF bool NECSDEF_NAME(string_push_cstr)(String* str, const char* cstr);
 
-NECSDEF String nec_string_from_cstr(const char* cstr);
-NECSDEF StringView nec_string_slice(const String* str, size_t start,
-                                    size_t end);
-NECSDEF StringView nec_string_as_slice(const String* str);
+NECSDEF String NECSDEF_NAME(string_from_cstr)(const char* cstr);
+NECSDEF StringView NECSDEF_NAME(string_slice)(const String* str, size_t start,
+                                              size_t end);
+NECSDEF StringView NECSDEF_NAME(string_as_slice)(const String* str);
 
 #ifndef NEC_SV_FMT
 #define NEC_SV_FMT "%.*s"
@@ -60,6 +73,10 @@ NECSDEF StringView nec_string_as_slice(const String* str);
 #ifndef NEC_SV_ARG
 #define NEC_SV_ARG(sv) (int)(sv)->len, (sv)->items
 #endif
+
+#ifdef __cplusplus
+}  // namespace nec_string
+#endif  // __cplusplus
 
 #endif  // NEC_STRING_H_
 
@@ -70,6 +87,18 @@ NECSDEF StringView nec_string_as_slice(const String* str);
 /////////////////////////
 
 #ifdef NEC_STRING_IMPLEMENTATION
+
+#ifdef __cplusplus
+namespace nec_string {
+#endif  // __cplusplus
+
+#ifdef __cplusplus
+#ifndef NEC_DECLTYPE_CAST
+#define NEC_DECLTYPE_CAST(T) (decltype(T))
+#endif  // NEC_DECLTYPE_CAST
+#else
+#define NEC_DECLTYPE_CAST(T)
+#endif  // __cplusplus
 
 #ifndef NEC_REALLOC
 #include <stdlib.h>
@@ -100,16 +129,16 @@ static StringView nec_string__view(const String* str, size_t start,
     }
 }
 
-NECSDEF String nec_string_new() { return (String){0}; }
+NECSDEF String NECSDEF_NAME(string_new)() { return (String){0}; }
 
-NECSDEF bool nec_string_push(String* str, const char item) {
+NECSDEF bool NECSDEF_NAME(string_push)(String* str, const char item) {
     if (!nec_string__reserve(str, str->len + 1)) return false;
 
     str->items[str->len++] = item;
     return true;
 }
 
-NECSDEF bool nec_string_push_cstr(String* str, const char* cstr) {
+NECSDEF bool NECSDEF_NAME(string_push_cstr)(String* str, const char* cstr) {
     size_t len = strlen(cstr);
 
     // include null terminator for later copying
@@ -121,7 +150,7 @@ NECSDEF bool nec_string_push_cstr(String* str, const char* cstr) {
     return true;
 }
 
-NECSDEF String nec_string_from_cstr(const char* cstr) {
+NECSDEF String NECSDEF_NAME(string_from_cstr)(const char* cstr) {
     String s = {0};
 
     // doesn't include the null terminator
@@ -138,13 +167,17 @@ NECSDEF String nec_string_from_cstr(const char* cstr) {
     return s;
 }
 
-NECSDEF StringView nec_string_slice(const String* str, size_t start,
-                                    size_t end) {
+NECSDEF StringView NECSDEF_NAME(string_slice)(const String* str, size_t start,
+                                              size_t end) {
     return nec_string__view(str, start, end);
 }
 
-NECSDEF StringView nec_string_as_slice(const String* str) {
+NECSDEF StringView NECSDEF_NAME(string_as_slice)(const String* str) {
     return (StringView){.len = str->len, .items = str->items};
 }
+
+#ifdef __cplusplus
+}  // namespace nec_string
+#endif  // __cplusplus
 
 #endif  // NEC_STRING_IMPLEMENTATION

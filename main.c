@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-#define NEC_IMPLEMENTATION
-#include "nec.h"
+#define NEC_STRING_IMPLEMENTATION
+#include "nec/nec_string.h"
 
 int main() {
     String s = nec_string_from_cstr("fuck you!");
